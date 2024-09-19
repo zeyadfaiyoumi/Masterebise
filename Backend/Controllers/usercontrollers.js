@@ -1,4 +1,5 @@
 const User = require("../Models/users");
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -86,13 +87,13 @@ exports.googleSignup = async (req, res) => {
       user = new User({
         name,
         email,
-        profilePicture: picture,
+        image: picture,
         googleId: payload.sub,
       });
       await user.save();
     }
 
-    const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
+    const token = jwt.sign({ id: user._id }, SECRET_KEY, {
       expiresIn: "1d",
     });
     res.cookie("token", token, {
@@ -109,7 +110,7 @@ exports.googleSignup = async (req, res) => {
     res.status(500).json({ message: "Error during Google signup" });
   }
 };
-// ____________________________________________loginSignup________________________
+// ____________________________________________googleLogin________________________
 exports.googleLogin = async (req, res) => {
   try {
     const { id_token } = req.body;
@@ -136,5 +137,42 @@ exports.googleLogin = async (req, res) => {
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ message: "Google login failed", error });
+  }
+};
+// ______________________________getAllUsers____________________________________
+exports.getAllUsers = async (req, res) => {
+  try {
+    const Users = await User.find({ _id: req.user.id });
+
+    res.status(200).json({ Users });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+};
+//____________________________________checkToken____________________________________
+
+exports.checkAuth = async (req, res) => {
+  try {
+    res.status(200).json({ authenticated: true });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ authenticated: false, message: "Internal server error" });
+  }
+};
+// ____________________________________logout____________________________________
+
+exports.logout = async (req, res) => {
+  try {
+    // حذف التوكن من الكوكيز عن طريق تعيين قيمة فارغة وتعيين تاريخ انتهاء الصلاحية في الماضي
+    res.cookie("token", "", { expires: new Date(0), httpOnly: true });
+
+    // إرسال استجابة تؤكد نجاح عملية تسجيل الخروج
+    res.status(200).json({ message: "Successfully logged out." });
+  } catch (error) {
+    // إرسال استجابة في حال حدوث خطأ
+    res.status(500).json({ message: "Internal server error." });
   }
 };

@@ -1,14 +1,27 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProduct } from "../store/productslice";
 import Swal from "sweetalert2";
 import Navbar from "../componants/navbar/Navbar";
 import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
 
 function Catalog() {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
+  const status = useSelector((state) => state.products.status);
+  const error = useSelector((state) => state.products.error);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const [filter, setFilter] = useState("تريند");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getProduct()).catch((err) => {
+        console.error("Failed to fetch products:", err);
+      });
+    }
+  }, [status, dispatch]);
 
   const handleAddToCart = () => {
     Swal.fire({
@@ -39,25 +52,18 @@ function Catalog() {
     });
   };
 
-  // بيانات نموذجية للمنتجات
-  const products = [...Array(8)].map((_, index) => ({
-    id: index + 1,
-    name: "ساعة Mi W02 الذكية",
-    supplier: "ZOS",
-    costPrice: "25 JD",
-    expectedProfit: "6.5 JD",
-    imageUrl:
-      "https://tv-it.com/storage/shada/smart-watch/smart-watch-imilab-w02-watch.webp",
-  }));
-
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(
+    (Array.isArray(products) ? products.length : 0) / itemsPerPage
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const currentItems = products.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const currentItems = Array.isArray(products)
+    ? products.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -69,12 +75,12 @@ function Catalog() {
         style={{
           backgroundImage:
             "url('https://afdalanalytics.com//storage/Blog_108_Internal_Design_2.jpg')",
-          backgroundSize: "contain", // تصغير حجم الصورة
-          backgroundPosition: "top left", // تغيير مكان الصورة من المركز إلى الزاوية العلوية اليسرى
-          backgroundRepeat: "no-repeat", // عدم تكرار الصورة
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+        <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative text-center font-bold text-2xl md:text-3xl text-white">
           <h1 className="pb-4 font-normal">ابحث عن منتجك المفضل</h1>
           <div className="flex justify-center items-center gap-4">
@@ -158,48 +164,46 @@ function Catalog() {
           </div>
         </div>
       </section>
-      <div className="grid grid-cols-1 sm:grid-cols-2  bg-primary md:grid-cols-3 lg:grid-cols-4 gap-6 p-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-12">
         {currentItems.map((product) => (
           <div
-            key={product.id}
-            className="max-w-sm bg-primary border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 dark:bg-gray-800 dark:border-gray-700"
+            key={product._id}
+            className="bg-white rounded-lg shadow-lg p-5 flex flex-col"
           >
-            <Link to="/details">
-              <img
-                className="rounded-t-lg w-full h-64"
-                src={product.imageUrl}
-                alt={product.name}
-              />
-            </Link>
-            <div className="p-5">
+            <img
+              src={product.imageURL || "https://via.placeholder.com/150"}
+              alt={product.productName}
+              className="w-full h-56 object-cover rounded-t-lg"
+            />
+            <div className="p-5 flex-1 flex flex-col">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
-                {product.name}
+                {product.productName}
               </h5>
-              <p className="mb-3 font-normal text-[#0A00C7] dark:text-gray-400">
+              <p className="mb-3 font-normal text-[#0A00C7] dark:text-gray-400 text-center">
                 المورد: {product.supplier}
               </p>
-              <div className="flex justify-between">
-                <div>
+              <div className="flex justify-between mb-4">
+                <div className="text-center">
                   <p className="font-normal text-black dark:text-gray-400">
                     سعر التكلفة
                   </p>
-                  <p className="font-bold text-scand dark:text-gray-400 text-center">
-                    {product.costPrice}
+                  <p className="font-bold text-scand dark:text-gray-400">
+                    {product.cost} JD
                   </p>
                 </div>
-                <div>
+                <div className="text-center">
                   <p className="font-normal text-black dark:text-gray-400">
-                    الربح المتوقع
+                    السعر المقترح
                   </p>
-                  <p className="font-bold text-scand dark:text-gray-400 text-center">
-                    {product.expectedProfit}
+                  <p className="font-bold text-scand dark:text-gray-400">
+                    {product.suggestedPrice} JD
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="mt-4 w-full text-white bg-[#0A00C7] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                className="mt-auto w-full text-white bg-[#0A00C7] hover:bg-[#0A00C7] focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2"
               >
                 اضافة الى منتجاتي
               </button>
@@ -207,49 +211,27 @@ function Catalog() {
           </div>
         ))}
       </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center my-6">
-        <nav aria-label="Page navigation example">
-          <ul className="inline-flex items-center -space-x-px">
-            <li>
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={`block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${
-                  currentPage === 1 && "cursor-not-allowed opacity-50"
-                }`}
-              >
-                <FaArrowLeft />
-              </button>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li key={index}>
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className={`px-3 py-2 leading-tight border ${
-                    currentPage === index + 1
-                      ? "text-white bg-[#0A00C7] border-[#0A00C7]"
-                      : "text-gray-500 bg-white border-gray-300"
-                  } hover:bg-gray-100 hover:text-gray-700`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className={`block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${
-                  currentPage === totalPages && "cursor-not-allowed opacity-50"
-                }`}
-              >
-                <FaArrowRight />
-              </button>
-            </li>
-          </ul>
-        </nav>
+      <div className="flex justify-center items-center gap-4 p-6">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="bg-[#0A00C7] text-white p-3 rounded-lg disabled:opacity-50 flex items-center gap-2"
+        >
+          <FaArrowRight />
+        </button>
+        <p className="text-lg">
+          صفحة {currentPage} من {totalPages}
+        </p>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="bg-[#0A00C7] text-white p-3 rounded-lg disabled:opacity-50 flex items-center gap-2"
+        >
+          
+          <FaArrowLeft />
+        </button>
       </div>
     </>
   );

@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import NEWlogo from "../../assets/NEWlogo.png";
-
 import { useState, useEffect } from "react";
 import "./Navbar.css";
-
+import { FiLogOut } from "react-icons/fi";
 function Navbar() {
   const [bergr, setbergr] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   function Hndelhumberger() {
     setbergr(!bergr);
@@ -26,6 +27,35 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Check authentication status
+    axios
+      .get("http://localhost:5001/api/zos/checkAuth", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setIsAuthenticated(response.data.authenticated);
+      })
+      .catch((error) => {
+        setIsAuthenticated(response.data.authenticated);
+        console.error("Error checking authentication status", error);
+      });
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5001/api/zos/logout",
+        {},
+        { withCredentials: true }
+      ); // تأكد من تضمين الكوكيز مع الطلب
+      // إعادة توجيه أو تحديث الحالة بعد تسجيل الخروج
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
     <>
@@ -135,7 +165,7 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/ProfilePage"
                   className="block py-2 px-3 text-custmblack rounded hover:text-custmblue md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   اعدادات الحساب
@@ -152,17 +182,23 @@ function Navbar() {
             </ul>
           </div>
           <div className="hidden md:flex">
-            <Link
-              to="/Signup"
-              className="py-2 px-3 text-white rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
+            {isAuthenticated ? (
               <button
+                onClick={handleLogout}
                 type="button"
+                className="text-white bg-red-500 hover:text-white border border-white  focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+              >
+                <FiLogOut style={{ transform: "rotate(180deg)" }} size={15} />{" "}
+                {/* عكس الأيقونة */}
+              </button>
+            ) : (
+              <Link
+                to="/Signup"
                 className="text-white bg-custmblue hover:text-white border border-white hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
               >
-                تسجيل الدخول
-              </button>
-            </Link>
+                تسجيل دخول
+              </Link>
+            )}
           </div>
         </div>
       </nav>

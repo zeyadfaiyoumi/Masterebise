@@ -4,13 +4,14 @@ import Footer from "./componants/footer/Footer";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/login";
-import Profil from "./pages/Profil";
+import Profil from "./pages/wallet";
 import Catalog from "./pages/catalog";
 import Ourstory from "./pages/sory";
 import Chart from "./pages/chart";
 import Myproduct from "./pages/Myprduct";
 import Detils from "./pages/dedils";
 import Checkout from "./pages/checkout";
+import ProfilePage from "./pages/profilpage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/Myproduct" element={<Myproduct />} />
             <Route path="/details" element={<Detils />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/ProfilePage" element={<ProfilePage />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
