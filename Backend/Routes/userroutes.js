@@ -8,6 +8,7 @@ router.post("/login", userController.login);
 router.post("/googleSignup", userController.googleSignup);
 router.post("/Googellogin", userController.googleLogin);
 router.get("/profil", Auth, userController.getAllUsers);
+router.put("/updateUserprofil", Auth, userController.updateUser);
 // auth.js
 router.get("/checkAuth", Auth, userController.checkAuth);
 router.post("/logout", Auth, userController.logout);

@@ -4,6 +4,7 @@ import { getProduct } from "../store/productslice";
 import Swal from "sweetalert2";
 import Navbar from "../componants/navbar/Navbar";
 import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Catalog() {
   const dispatch = useDispatch();
@@ -170,11 +171,13 @@ function Catalog() {
             key={product._id}
             className="bg-white rounded-lg shadow-lg p-5 flex flex-col"
           >
-            <img
-              src={product.imageURL || "https://via.placeholder.com/150"}
-              alt={product.productName}
-              className="w-full h-56 object-cover rounded-t-lg"
-            />
+            <Link to={`/details/${product._id}`}>
+              <img
+                src={product.imageURL || "https://via.placeholder.com/150"}
+                alt={product.productName}
+                className="w-full h-56 object-cover rounded-t-lg"
+              />
+            </Link>
             <div className="p-5 flex-1 flex flex-col">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
                 {product.productName}
@@ -229,7 +232,6 @@ function Catalog() {
           disabled={currentPage === totalPages}
           className="bg-[#0A00C7] text-white p-3 rounded-lg disabled:opacity-50 flex items-center gap-2"
         >
-          
           <FaArrowLeft />
         </button>
       </div>
