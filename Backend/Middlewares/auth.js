@@ -5,8 +5,7 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const verifyToken = (req, res, next) => {
   // جلب التوكن من الكوكيز أو الهيدرز
-  const token =
-    req.cookies.token;
+  const token = req.cookies.token;
 
   if (!token) {
     return res

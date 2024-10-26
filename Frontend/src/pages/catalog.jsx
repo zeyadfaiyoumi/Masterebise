@@ -1,20 +1,233 @@
+// import React, { useState, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { getProduct } from "../store/productslice";
+// import Swal from "sweetalert2";
+// import Navbar from "../componants/navbar/Navbar";
+// import {
+//   FaSearch,
+//   FaChevronLeft,
+//   FaChevronRight,
+//   FaFilter,
+// } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+// import axios from "axios"; // استيراد Axios
+
+// function Catalog() {
+//   const dispatch = useDispatch();
+//   const products = useSelector((state) => state.products.products);
+//   const status = useSelector((state) => state.products.status);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 8;
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filterDate, setFilterDate] = useState("");
+
+//   useEffect(() => {
+//     if (status === "idle") {
+//       dispatch(getProduct()).catch((err) => {
+//         console.error("Failed to fetch products:", err);
+//       });
+//     }
+//   }, [status, dispatch]);
+
+//   // دالة لإضافة المنتج إلى المفضلة
+//   const handleAddToCart = async (productId) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:5001/api/zos/Favorite",
+//         {
+//           product_id: productId,
+//         },
+//         {
+//           withCredentials: true,
+//         }
+//       );
+
+//       // إذا كانت الإضافة ناجحة
+//       if (response.status === 201) {
+//         Swal.fire({
+//           title: "🎉 تمت الإضافة إلى السلة بنجاح!",
+//           text: "هل تود الانتقال إلى منتجاتك الآن أو متابعة التسوق؟",
+//           icon: "success",
+//           showCancelButton: true,
+//           confirmButtonColor: "#0A00C7",
+//           cancelButtonColor: "#d33",
+//           confirmButtonText: "منتجاتي",
+//           cancelButtonText: "متابعة التسوق",
+//           background: "#f8f9fa",
+//           customClass: {
+//             title: "font-bold text-xl",
+//             confirmButton: "rounded-lg px-6 py-3",
+//             cancelButton: "rounded-lg px-6 py-3",
+//           },
+//         }).then((result) => {
+//           if (result.isConfirmed) {
+//             window.location.href = "/Myproduct";
+//           }
+//         });
+//       }
+//     } catch (error) {
+//       console.error("Failed to add product to favorites:", error);
+
+//       // تحقق من حالة الخطأ
+//       if (error.response && error.response.status === 400) {
+//         Swal.fire({
+//           title: "✅ المنتج موجود بالفعل في منتجاتي !",
+//           text: "يمكنك إضافة منتج آخر.",
+//           icon: "warning",
+//           confirmButtonColor: "#0A00C7",
+//         });
+//       } else {
+//         // في حالة حدوث خطأ آخر
+//         Swal.fire({
+//           title: "❌ فشل في إضافة المنتج إلى منتجاتي يجب تسجيل الدخول!",
+//           text: "يرجى المحاولة مرة أخرى.",
+//           icon: "error",
+//           confirmButtonColor: "#0A00C7",
+//         });
+//       }
+//     }
+//   };
+
+//   const filteredProducts = Array.isArray(products)
+//     ? products.filter((product) => {
+//         const isNameMatch = product.productName
+//           .toLowerCase()
+//           .includes(searchTerm.toLowerCase());
+//         const isDateMatch =
+//           filterDate === "" ||
+//           new Date(product.createdAt).toISOString().split("T")[0] ===
+//             filterDate;
+//         return isNameMatch && isDateMatch;
+//       })
+//     : [];
+
+//   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+//   const currentItems = filteredProducts.slice(
+//     (currentPage - 1) * itemsPerPage,
+//     currentPage * itemsPerPage
+//   );
+
+//   return (
+//     <div className="bg-gray-100 min-h-screen">
+//       <Navbar />
+
+//       <main className="container mx-auto px-4 py-28">
+//         {/* Search and Filter Section */}
+//         <div className="max-w-4xl mx-auto mb-8">
+//           <div className="bg-white shadow-lg rounded-lg p-6">
+//             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+//               <div className="relative w-full md:w-auto mb-4 md:mb-0">
+//                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-custmblue" />
+//                 <input
+//                   type="text"
+//                   placeholder="ابحث عن منتج..."
+//                   className="w-full md:w-64 border-2 border-custmblue rounded-full pl-10 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-custmblue transition-all"
+//                   value={searchTerm}
+//                   onChange={(e) => setSearchTerm(e.target.value)}
+//                 />
+//               </div>
+//               <div className="relative flex items-center w-full md:w-auto">
+//                 <FaFilter className="absolute left-3 text-custmblue" />
+//                 <input
+//                   type="date"
+//                   className="pl-10 w-full md:w-64 border-2 border-custmblue rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-custmblue transition-shadow"
+//                   value={filterDate}
+//                   onChange={(e) => setFilterDate(e.target.value)}
+//                 />
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+//           {currentItems.map((product) => (
+//             <div
+//               key={product._id}
+//               className="bg-primary rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1"
+//             >
+//               <Link to={`/details/${product._id}`}>
+//                 <img
+//                   src={
+//                     product.imageURL || "https://via.placeholder.com/300x200"
+//                   }
+//                   alt={product.productName}
+//                   className="w-full h-48 object-cover"
+//                 />
+//               </Link>
+//               <div className="p-4">
+//                 <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+//                   {product.productName}
+//                 </h2>
+//                 <p className="text-sm text-custmblue mb-3 text-center">
+//                   المورد: {product.supplier}
+//                 </p>
+//                 <div className="flex justify-between items-center mb-4">
+//                   <div className="text-center">
+//                     <p className="text-xs text-gray-500">سعر التكلفة</p>
+//                     <p className="text-lg font-bold text-scand">
+//                       {product.cost} JD
+//                     </p>
+//                   </div>
+//                   <div className="text-center">
+//                     <p className="text-xs text-gray-500">السعر المقترح</p>
+//                     <p className="text-lg font-bold text-scand">
+//                       {product.suggestedPrice} JD
+//                     </p>
+//                   </div>
+//                 </div>
+//                 <button
+//                   onClick={() => handleAddToCart(product._id)} // تمرير معرف المنتج
+//                   className="w-full bg-custmblue text-white py-2 rounded-lg hover:bg-custmblue transition-colors duration-300"
+//                 >
+//                   إضافة إلى منتجاتي
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {totalPages > 1 && (
+//           <div className="flex justify-center mt-8">
+//             {Array.from({ length: totalPages }, (_, i) => (
+//               <button
+//                 key={i}
+//                 onClick={() => setCurrentPage(i + 1)}
+//                 className={`mx-1 px-4 py-2 rounded ${
+//                   currentPage === i + 1
+//                     ? "bg-custmblue text-white"
+//                     : "bg-white text-custmblue hover:bg-custmblue hover:text-white"
+//                 } transition duration-300`}
+//               >
+//                 {i + 1}
+//               </button>
+//             ))}
+//           </div>
+//         )}
+//       </main>
+//     </div>
+//   );
+// }
+
+// export default Catalog;
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../store/productslice";
 import Swal from "sweetalert2";
 import Navbar from "../componants/navbar/Navbar";
-import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Catalog() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
   const status = useSelector((state) => state.products.status);
-  const error = useSelector((state) => state.products.error);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-  const [filter, setFilter] = useState("تريند");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const itemsPerPage = 8;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(""); // حقل الفئة الافتراضية فارغ
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,218 +237,203 @@ function Catalog() {
     }
   }, [status, dispatch]);
 
-  const handleAddToCart = () => {
-    Swal.fire({
-      title: "🎉 تمت الإضافة إلى السلة بنجاح!",
-      text: "هل تود الانتقال إلى منتجاتك الآن أو متابعة التسوق؟",
-      icon: "success",
-      showCancelButton: true,
-      confirmButtonColor: "#0A00C7",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "منتجاتي",
-      cancelButtonText: "متابعة التسوق",
-      background: "#f2f2f2",
-      backdrop: `
-        rgba(0,0,0,0.4)
-        url("https://media.giphy.com/media/jt7bAtEijhurm/giphy.gif")
-        left top
-        no-repeat
-      `,
-      customClass: {
-        title: "font-bold text-lg",
-        confirmButton: "rounded-lg px-6 py-3",
-        cancelButton: "rounded-lg px-6 py-3",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = "/Myproduct";
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/zos/Favorite",
+        { product_id: productId },
+        { withCredentials: true }
+      );
+
+      if (response.status === 201) {
+        Swal.fire({
+          title: "🎉 تمت الإضافة إلى السلة بنجاح!",
+          text: "هل تود الانتقال إلى منتجاتك الآن أو متابعة التسوق؟",
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonColor: "#0A00C7",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "منتجاتي",
+          cancelButtonText: "متابعة التسوق",
+          background: "#f8f9fa",
+          customClass: {
+            title: "font-bold text-xl",
+            confirmButton: "rounded-lg px-6 py-3",
+            cancelButton: "rounded-lg px-6 py-3",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/Myproduct";
+          }
+        });
       }
-    });
+    } catch (error) {
+      console.error("Failed to add product to favorites:", error);
+      if (error.response && error.response.status === 400) {
+        Swal.fire({
+          title: "✅ المنتج موجود بالفعل في منتجاتي!",
+          text: "يمكنك إضافة منتج آخر.",
+          icon: "warning",
+          confirmButtonColor: "#0A00C7",
+        });
+      } else {
+        Swal.fire({
+          title: "❌ فشل في إضافة المنتج إلى منتجاتي يجب تسجيل الدخول!",
+          text: "يرجى المحاولة مرة أخرى.",
+          icon: "error",
+          confirmButtonColor: "#0A00C7",
+        });
+      }
+    }
   };
 
-  const totalPages = Math.ceil(
-    (Array.isArray(products) ? products.length : 0) / itemsPerPage
-  );
+  // للحصول على جميع الفئات الفريدة من المنتجات
+  const uniqueCategories = [
+    ...new Set(
+      products.map((product) => {
+        // استبدال أسماء الفئات باللغة العربية
+        if (product.category === "electronics") return "الإلكترونيات";
+        if (product.category === "clothing") return "الملابس";
+        if (product.category === "furniture") return "الأثاث";
+        if (product.category === "books") return "الكتب";
+        return product.category; // في حالة عدم وجود فئة متطابقة
+      })
+    ),
+  ];
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((product) => {
+        const isNameMatch = product.productName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const isDateMatch =
+          filterDate === "" ||
+          new Date(product.createdAt).toISOString().split("T")[0] ===
+            filterDate;
+        const isCategoryMatch =
+          selectedCategory === "" || product.category === selectedCategory; // يظهر كل المنتجات إذا كانت الفئة فارغة
 
-  const currentItems = Array.isArray(products)
-    ? products.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      )
+        return isNameMatch && isDateMatch && isCategoryMatch;
+      })
     : [];
 
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const currentItems = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
-    <>
+    <div className="bg-gray-100 min-h-screen">
       <Navbar />
-      <section
-        className="py-24 relative bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://afdalanalytics.com//storage/Blog_108_Internal_Design_2.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative text-center font-bold text-2xl md:text-3xl text-white">
-          <h1 className="pb-4 font-normal">ابحث عن منتجك المفضل</h1>
-          <div className="flex justify-center items-center gap-4">
-            <div className="relative text-base">
-              <input
-                type="text"
-                placeholder="ابحث هنا..."
-                className="shadow-md focus:outline-none rounded-2xl py-3 px-6 block w-full pr-10 bg-gray-100 text-gray-700"
-              />
-              <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
-            <div className="relative inline-block text-left">
-              <button
-                type="button"
-                onClick={toggleDropdown}
-                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                id="options-menu"
-                aria-expanded={isDropdownOpen}
-                aria-haspopup="true"
-              >
-                {filter}
-                <svg
-                  className="-mr-1 ml-2 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
 
-              {isDropdownOpen && (
-                <div
-                  className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="options-menu"
+      <main className="container mx-auto px-4 py-28">
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+              <div className="relative w-full md:w-auto mb-4 md:mb-0">
+                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-custmblue" />
+                <input
+                  type="text"
+                  placeholder="ابحث عن منتج..."
+                  className="w-full md:w-64 border-2 border-custmblue rounded-full pl-10 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-custmblue transition-all"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="relative flex items-center w-full md:w-auto">
+                <FaFilter className="absolute left-3 text-custmblue" />
+                <select
+                  className="pl-10 w-full md:w-64 border-2 border-custmblue rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-custmblue transition-shadow"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
                 >
-                  <div className="py-1" role="none">
-                    <button
-                      onClick={() => {
-                        setFilter("تريند");
-                        toggleDropdown();
-                      }}
-                      className="text-gray-700 block px-4 py-2 text-sm"
-                      role="menuitem"
-                    >
-                      تريند
-                    </button>
-                    <button
-                      onClick={() => {
-                        setFilter("الأحدث");
-                        toggleDropdown();
-                      }}
-                      className="text-gray-700 block px-4 py-2 text-sm"
-                      role="menuitem"
-                    >
-                      الأحدث
-                    </button>
-                    <button
-                      onClick={() => {
-                        setFilter("الأعلى مبيعاً");
-                        toggleDropdown();
-                      }}
-                      className="text-gray-700 block px-4 py-2 text-sm"
-                      role="menuitem"
-                    >
-                      الأعلى مبيعاً
-                    </button>
-                  </div>
-                </div>
-              )}
+                  <option value="">جميع الفئات</option>
+                  {uniqueCategories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="relative flex items-center w-full md:w-auto">
+                <input
+                  type="date"
+                  className="pl-10 w-full md:w-64 border-2 border-custmblue rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-custmblue transition-shadow"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </section>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-12">
-        {currentItems.map((product) => (
-          <div
-            key={product._id}
-            className="bg-white rounded-lg shadow-lg p-5 flex flex-col"
-          >
-            <Link to={`/details/${product._id}`}>
-              <img
-                src={product.imageURL || "https://via.placeholder.com/150"}
-                alt={product.productName}
-                className="w-full h-56 object-cover rounded-t-lg"
-              />
-            </Link>
-            <div className="p-5 flex-1 flex flex-col">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
-                {product.productName}
-              </h5>
-              <p className="mb-3 font-normal text-[#0A00C7] dark:text-gray-400 text-center">
-                المورد: {product.supplier}
-              </p>
-              <div className="flex justify-between mb-4">
-                <div className="text-center">
-                  <p className="font-normal text-black dark:text-gray-400">
-                    سعر التكلفة
-                  </p>
-                  <p className="font-bold text-scand dark:text-gray-400">
-                    {product.cost} JD
-                  </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {currentItems.map((product) => (
+            <div
+              key={product._id}
+              className="bg-primary rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1"
+            >
+              <Link to={`/details/${product._id}`}>
+                <img
+                  src={
+                    product.imageURL || "https://via.placeholder.com/300x200"
+                  }
+                  alt={product.productName}
+                  className="w-full h-48 object-cover"
+                />
+              </Link>
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+                  {product.productName}
+                </h2>
+                <p className="text-sm text-custmblue mb-3 text-center">
+                  المورد: {product.supplier}
+                </p>
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500">سعر التكلفة</p>
+                    <p className="text-lg font-bold text-scand">
+                      {product.cost} JD
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500">السعر المقترح</p>
+                    <p className="text-lg font-bold text-scand">
+                      {product.suggestedPrice} JD
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="font-normal text-black dark:text-gray-400">
-                    السعر المقترح
-                  </p>
-                  <p className="font-bold text-scand dark:text-gray-400">
-                    {product.suggestedPrice} JD
-                  </p>
-                </div>
+                <button
+                  onClick={() => handleAddToCart(product._id)}
+                  className="w-full bg-custmblue text-white py-2 rounded-lg hover:bg-custmblue transition-colors duration-300"
+                >
+                  إضافة إلى منتجاتي
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className="mt-auto w-full text-white bg-[#0A00C7] hover:bg-[#0A00C7] focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2"
-              >
-                اضافة الى منتجاتي
-              </button>
             </div>
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`mx-1 px-4 py-2 rounded ${
+                  currentPage === i + 1
+                    ? "bg-custmblue text-white"
+                    : "bg-white text-custmblue hover:bg-custmblue hover:text-white"
+                } transition duration-300`}
+              >
+                {i + 1}
+              </button>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="flex justify-center items-center gap-4 p-6">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="bg-[#0A00C7] text-white p-3 rounded-lg disabled:opacity-50 flex items-center gap-2"
-        >
-          <FaArrowRight />
-        </button>
-        <p className="text-lg">
-          صفحة {currentPage} من {totalPages}
-        </p>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="bg-[#0A00C7] text-white p-3 rounded-lg disabled:opacity-50 flex items-center gap-2"
-        >
-          <FaArrowLeft />
-        </button>
-      </div>
-    </>
+        )}
+      </main>
+    </div>
   );
 }
 

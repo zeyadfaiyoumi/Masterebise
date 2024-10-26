@@ -168,7 +168,6 @@ import {
   FaInstagram,
   FaQuoteRight,
 } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 const Ourstory = () => {
   const teamMembers = [
@@ -219,84 +218,61 @@ const Ourstory = () => {
     { label: "الموردين", value: "100+", icon: <FaBoxOpen /> },
   ];
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <>
       <Navbar />
       <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
         <div className="container mx-auto px-4 py-20">
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
-            قصة نجاحنا
-          </motion.h1>
-
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
+          {/* Vision, Mission, Goals */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
               {
-                icon: <FaEye />,
+                icon: <FaEye className="text-4xl text-blue-600 mb-4" />,
                 title: "رؤيتنا",
                 content:
-                  "نسعى لأن نكون المنصة الرائدة في مجال التجارة الإلكترونية، نربط بين التجار والموردين بكفاءة وفعالية.",
+                  "نسعى لأن نكون المنصة الرائدة في مجال التجارة الإلكترونية.",
               },
               {
-                icon: <FaBullseye />,
+                icon: <FaBullseye className="text-4xl text-blue-600 mb-4" />,
                 title: "رسالتنا",
-                content:
-                  "توفير منصة موثوقة وسهلة الاستخدام تمكن التجار من الوصول إلى أفضل الموردين وتنمية أعمالهم.",
+                content: "توفير منصة موثوقة وسهلة الاستخدام.",
               },
               {
-                icon: <FaChartLine />,
+                icon: <FaChartLine className="text-4xl text-blue-600 mb-4" />,
                 title: "أهدافنا",
-                content:
-                  "تحقيق نمو مستدام، توسيع قاعدة عملائنا، وتحسين تجربة المستخدم باستمرار.",
+                content: "تحقيق نمو مستدام وتوسيع قاعدة عملائنا.",
               },
             ].map((item, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 text-center"
               >
-                <div className="text-4xl text-blue-500 mb-4">{item.icon}</div>
+                <div>{item.icon}</div>
                 <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
                 <p className="text-gray-600">{item.content}</p>
               </div>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-white p-8 rounded-lg shadow-lg mb-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
+          {/* Our Journey */}
+          <div className="bg-white p-8 rounded-lg shadow-lg mb-16">
             <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">
               مسيرتنا
             </h2>
             <p className="mb-6 text-gray-600 text-center max-w-3xl mx-auto">
               بدأنا رحلتنا في عام 2020 بفكرة بسيطة: جعل التجارة الإلكترونية أكثر
-              سهولة وفعالية للجميع. منذ ذلك الحين، نمونا بشكل كبير، وساعدنا آلاف
-              التجار في تنمية أعمالهم وربطهم بأفضل الموردين.
+              سهولة وفعالية.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {teamMembers.map((member, index) => (
                 <div key={index} className="text-center">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-40 h-40 rounded-full mx-auto mb-4 border-4 border-blue-500 shadow-lg"
-                  />
+                  <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg transition-transform duration-300 hover:scale-105">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <h3 className="text-xl font-semibold mb-2 text-gray-800">
                     {member.name}
                   </h3>
@@ -320,14 +296,10 @@ const Ourstory = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-blue-600 p-12 rounded-lg shadow-lg text-white mb-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
+          {/* Achievements */}
+          <div className="bg-blue-600 p-12 rounded-lg shadow-lg text-white mb-16">
             <h2 className="text-3xl font-semibold mb-8 text-center">
               إنجازاتنا بالأرقام
             </h2>
@@ -340,14 +312,10 @@ const Ourstory = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-gray-100 p-8 rounded-lg shadow-lg mb-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
+          {/* Testimonials */}
+          <div className="bg-gray-100 p-8 rounded-lg shadow-lg mb-16">
             <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">
               ماذا يقول عملاؤنا
             </h2>
@@ -356,14 +324,12 @@ const Ourstory = () => {
                 {
                   name: "أحمد محمد",
                   role: "صاحب متجر إلكتروني",
-                  quote:
-                    "لقد غيرت هذه المنصة طريقة إدارتي لأعمالي. الآن أستطيع الوصول إلى أفضل الموردين بسهولة.",
+                  quote: "لقد غيرت هذه المنصة طريقة إدارتي لأعمالي.",
                 },
                 {
                   name: "سارة خالد",
                   role: "مديرة مبيعات",
-                  quote:
-                    "الدعم الفني ممتاز والمنصة سهلة الاستخدام. ساعدتنا على زيادة مبيعاتنا بشكل كبير.",
+                  quote: "الدعم الفني ممتاز والمنصة سهلة الاستخدام.",
                 },
               ].map((testimonial, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-md">
@@ -376,26 +342,21 @@ const Ourstory = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="text-center"
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
+          {/* Join Us Section */}
+          <div className="text-center mb-16">
             <h2 className="text-3xl font-semibold mb-6 text-gray-800">
               انضم إلينا في رحلة النجاح
             </h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              نحن نبحث دائمًا عن شركاء جدد للانضمام إلى منصتنا المتنامية. سواء
-              كنت تاجرًا يبحث عن توسيع نطاق أعماله أو موردًا يتطلع إلى الوصول
-              إلى عملاء جدد، فنحن هنا لمساعدتك.
+              نحن نبحث دائمًا عن شركاء جدد ومتميزين. إذا كنت مهتمًا، لا تتردد في
+              التواصل معنا!
             </p>
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
-              ابدأ الآن
+            <button className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+              تواصل معنا
             </button>
-          </motion.div>
+          </div>
         </div>
       </div>
       <Footer />

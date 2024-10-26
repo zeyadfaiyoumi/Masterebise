@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { OAuth2Client } = require("google-auth-library");
+const fs = require("fs");
+const path = require("path");
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "your_secret_key";
 // ____________________________________________signup________________________
@@ -153,9 +155,54 @@ exports.getAllUsers = async (req, res) => {
 };
 // ___________________________________updateUser____________________
 
+// exports.updateUser = async (req, res) => {
+//   const userId = req.user.id; // الحصول على ID المستخدم المسجل
+//   const { name, location, phonNum, password } = req.body; // القيم القادمة من الفرونت إند
+
+//   try {
+//     // إنشاء كائن يحتوي على البيانات المحدثة
+//     const updatedData = {
+//       name,
+//       location,
+//       phonNum,
+//       image: req.fill.path,
+//     };
+
+//     // إذا تم إرسال كلمة المرور، نقوم بتشفيرها وإضافتها إلى البيانات المحدثة
+//     if (password) {
+//       const hashedPassword = await bcrypt.hash(password, 10);
+//       updatedData.password = hashedPassword; // إضافة كلمة المرور المشفرة
+//     }
+
+//     // تحديث بيانات المستخدم في قاعدة البيانات
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       updatedData,
+//       { new: true } // هذا الخيار يعيد الكائن المحدث
+//     );
+
+//     // تحقق من وجود المستخدم
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res
+//       .status(200)
+//       .json({ message: "User updated successfully", user: updatedUser });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Internal server error", error: error.message });
+//   }
+// };
 exports.updateUser = async (req, res) => {
   const userId = req.user.id; // الحصول على ID المستخدم المسجل
-  const { name, location, phonNum, password, image } = req.body; // القيم القادمة من الفرونت إند
+  const { name, location, phonNum, password } = req.body; // القيم القادمة من الفرونت إند
+  console.log(req.file);
+
+  if (!name || !location || !phonNum) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
     // إنشاء كائن يحتوي على البيانات المحدثة
@@ -163,7 +210,8 @@ exports.updateUser = async (req, res) => {
       name,
       location,
       phonNum,
-      image,
+      // تأكد من وجود الصورة قبل الوصول إلى مسارها
+      image: req.file ? req.file.path : undefined, // إذا لم تكن الصورة موجودة، نتركها غير محددة
     };
 
     // إذا تم إرسال كلمة المرور، نقوم بتشفيرها وإضافتها إلى البيانات المحدثة
@@ -188,11 +236,13 @@ exports.updateUser = async (req, res) => {
       .status(200)
       .json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
+    console.error(error); // سجّل تفاصيل الخطأ
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
   }
 };
+
 //____________________________________checkToken____________________________________
 
 exports.checkAuth = async (req, res) => {
