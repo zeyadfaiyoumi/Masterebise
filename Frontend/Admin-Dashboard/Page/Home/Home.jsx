@@ -12,6 +12,12 @@ import {
 } from "recharts";
 import Loading from "../../components/Loading";
 import axios from "axios";
+import {
+  FiTrendingUp,
+  FiActivity,
+  FiClipboard,
+  FiLayers,
+} from "react-icons/fi";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,25 +38,24 @@ const Dashboard = () => {
         const stats = response.data;
 
         setStatistics([
-          { title: "المستخدمين", value: stats.patients, color: "bg-[#1f7b6f]" },
-          {
-            title: "مجموع المنتجات",
-            value: stats.doctors,
-            color: "bg-[#232323]",
-          },
           {
             title: "مجموع الطلبات",
             value: stats.appointments,
-            color: "bg-[#1f7b6f]",
+            color: "bg-custmblue",
+          },
+          { title: "المستخدمين", value: stats.patients, color: "bg-blue-600" },
+          {
+            title: "مجموع المنتجات",
+            value: stats.doctors,
+            color: "bg-green-600",
           },
           {
             title: "الأرباح",
             value: stats.totalBillingAmount.toFixed(2) + " JOD",
-            color: "bg-[#232323]",
+            color: "bg-custmblue",
           },
         ]);
 
-        // إعداد بيانات الرسم البياني
         setData([
           { name: "Jan", Profits: 200 },
           { name: "Feb", Profits: 300 },
@@ -77,38 +82,98 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row bg-primary min-h-screen">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <Sidebar />
-      <div className="flex justify-center items-end  min-h-screen p-8 md:ml-64">
-        <div className="w-full max-w-6xl ml-auto md:mr-16">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-            Dashboard
-          </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {statistics.map((item, index) => (
-              <div
-                key={index}
-                className={`p-4 rounded shadow text-center ${item.color}`}
-              >
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="text-2xl font-bold">{item.value}</p>
+      <div className="w-full max-w-5xl px-6 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">لوحة التحكم</h1>
+          <p className="text-gray-600">نظرة عامة على أداء المتجر</p>
+        </div>
+
+        {/* إحصائيات */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {statistics.map((item, index) => (
+            <div
+              key={index}
+              className={`${item.color} rounded-lg shadow-lg transition-transform duration-300 hover:scale-105`}
+            >
+              <div className="p-6 text-white">
+                <h3 className="text-lg font-medium mb-2">{item.title}</h3>
+                <p className="text-3xl font-bold">{item.value}</p>
               </div>
-            ))}
-          </div>
-          <div className="bg-white p-4 rounded shadow mt-8">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 text-center">
-              تحليل المبيعات السنوي
-            </h2>
-            <ResponsiveContainer width="100%" height={300}>
+            </div>
+          ))}
+        </div>
+
+        {/* الرسم البياني */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            إحصائيات الأداء
+          </h2>
+          <div className="h-[400px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" className="opacity-50" />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: "#374151" }}
+                  axisLine={{ stroke: "#D1D5DB" }}
+                />
+                <YAxis
+                  tick={{ fill: "#374151" }}
+                  axisLine={{ stroke: "#D1D5DB" }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#FFF",
+                    border: "1px solid #D1D5DB",
+                    borderRadius: "0.5rem",
+                  }}
+                />
                 <Legend />
-                <Bar dataKey="Profits" fill="#1a4f9e" />
+                <Bar dataKey="Profits" fill="#16A34A" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* قسم إضافي للمعلومات الجمالية */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-blue-100 rounded-lg shadow-lg p-6 flex items-center">
+            <FiTrendingUp className="text-blue-600 text-4xl mr-4" />
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">
+                إحصائيات النمو
+              </h3>
+              <p className="text-gray-600">نتطلع لتطوير اداء المتجر بسرعة عالية</p>
+            </div>
+          </div>
+          <div className="bg-green-100 rounded-lg shadow-lg p-6 flex items-center">
+            <FiActivity className="text-green-600 text-4xl mr-4" />
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">
+                أداء الأنشطة
+              </h3>
+              <p className="text-gray-600">تحليل شامل لنشاط المستخدمين</p>
+            </div>
+          </div>
+          <div className="bg-indigo-100 rounded-lg shadow-lg p-6 flex items-center">
+            <FiClipboard className="text-indigo-600 text-4xl mr-4" />
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">
+                تحديثات عامة
+              </h3>
+              <p className="text-gray-600">مراجعة عامة للمعلومات</p>
+            </div>
+          </div>
+          <div className="bg-purple-100 rounded-lg shadow-lg p-6 flex items-center">
+            <FiLayers className="text-purple-600 text-4xl mr-4" />
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">
+                أفكار مستقبلية
+              </h3>
+              <p className="text-gray-600">التطلع لخطط جديدة وتحديثات</p>
+            </div>
           </div>
         </div>
       </div>

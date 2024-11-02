@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProductList from "../Page/Doctors/DoctorsDashboard";
+import ProductList from "../Page/Productlist/DoctorsDashboard";
 import {
   Home,
   Users,

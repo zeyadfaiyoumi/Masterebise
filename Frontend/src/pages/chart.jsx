@@ -561,13 +561,14 @@ import { Link } from "react-router-dom";
 import Navbar from "../componants/navbar/Navbar";
 import axios from "axios"; // استيراد axios لإرسال الطلب
 import Swal from "sweetalert2"; // استيراد SweetAlert2
+import { useNavigate } from "react-router-dom";
 
 function Chart() {
   const getCartItems = () => {
     const items = localStorage.getItem("cart");
     return items ? JSON.parse(items) : [];
   };
-
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(getCartItems());
 
   const updateSuggestedPrice = (index, value) => {
@@ -648,6 +649,10 @@ function Chart() {
         text: "شكرًا لك على طلبك!",
         icon: "success",
         confirmButtonText: "موافق",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/PaymentPage"); // توجيه المستخدم إلى صفحة الدفع
+        }
       });
     } catch (error) {
       console.error("Error submitting order:", error);

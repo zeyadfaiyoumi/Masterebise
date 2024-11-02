@@ -17,7 +17,7 @@ import MyOrdersPage from "./pages/profilorders";
 import Dashboard from "../Admin-Dashboard/Page/Home/Home";
 import AdminDashboard from "../Admin-Dashboard/Page/Users/UserDashboard";
 import PaymentPage from "./pages/payment";
-import ProductList from "../Admin-Dashboard/Page/Doctors/DoctorsDashboard";
+import ProductList from "../Admin-Dashboard/Page/Productlist/DoctorsDashboard";
 import ContactList from "../Admin-Dashboard/Page/ContactUs/ContactUsDashboard";
 function App() {
   return (

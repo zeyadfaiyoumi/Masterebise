@@ -39,13 +39,35 @@
 //     try {
 //       await axios.delete(
 //         `http://localhost:5001/api/zos/Favorite/${productId}`,
-
 //         { withCredentials: true }
 //       );
 //       // تحديث حالة المنتجات بعد الحذف
 //       setProducts(products.filter((product) => product._id !== productId));
 //     } catch (error) {
 //       console.error("Error deleting product", error);
+//     }
+//   };
+
+//   // دالة لإضافة المنتج إلى السلة
+//   const addToCart = (product) => {
+//     // استرجاع السلة الحالية من localStorage
+//     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+//     // التحقق مما إذا كان المنتج موجودًا في السلة باستخدام _id
+//     const productExists = currentCart.some((item) => item._id === product._id);
+
+//     if (productExists) {
+//       // تنبيه للمستخدم بأن المنتج موجود بالفعل
+//       alert(`${product.productName} موجود بالفعل في السلة!`);
+//     } else {
+//       // إضافة المنتج إلى السلة
+//       currentCart.push(product);
+
+//       // تخزين السلة المحدثة في localStorage
+//       localStorage.setItem("cart", JSON.stringify(currentCart));
+
+//       // تنبيه للمستخدم بأن المنتج تم إضافته بنجاح
+//       alert(`${product.productName} تم إضافته إلى السلة!`);
 //     }
 //   };
 
@@ -169,11 +191,14 @@
 //                           <FontAwesomeIcon icon={faEye} />
 //                         </button>
 
-//                         <Link to="/Cartt">
-//                           <button className="text-yellow-600 hover:bg-yellow-100 p-1 rounded-full">
-//                             <FontAwesomeIcon icon={faShoppingCart} />
-//                           </button>
-//                         </Link>
+//                         {/* تعديل زر السلة ليتصل بدالة إضافة المنتج إلى السلة */}
+//                         <button
+//                           className="text-yellow-600 hover:bg-yellow-100 p-1 rounded-full"
+//                           onClick={() => addToCart(product)}
+//                         >
+//                           <FontAwesomeIcon icon={faShoppingCart} />
+//                         </button>
+
 //                         <button
 //                           className="text-red-600 hover:bg-red-100 p-1 rounded-full"
 //                           onClick={() => handleDelete(product._id)} // استدعاء دالة الحذف
@@ -227,8 +252,10 @@
 // }
 
 // export default Myproduct;
+
 import React, { useEffect, useState } from "react";
 import Navbar from "../componants/navbar/Navbar";
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrashAlt,
@@ -277,26 +304,27 @@ function Myproduct() {
     }
   };
 
-  // دالة لإضافة المنتج إلى السلة
   const addToCart = (product) => {
-    // استرجاع السلة الحالية من localStorage
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // التحقق مما إذا كان المنتج موجودًا في السلة باستخدام _id
     const productExists = currentCart.some((item) => item._id === product._id);
 
     if (productExists) {
-      // تنبيه للمستخدم بأن المنتج موجود بالفعل
-      alert(`${product.productName} موجود بالفعل في السلة!`);
+      // استخدام SweetAlert لإظهار رسالة
+      Swal.fire({
+        title: `${product.productName} موجود بالفعل في السلة!`,
+        icon: "warning",
+        confirmButtonText: "موافق",
+      });
     } else {
-      // إضافة المنتج إلى السلة
       currentCart.push(product);
-
-      // تخزين السلة المحدثة في localStorage
       localStorage.setItem("cart", JSON.stringify(currentCart));
 
-      // تنبيه للمستخدم بأن المنتج تم إضافته بنجاح
-      alert(`${product.productName} تم إضافته إلى السلة!`);
+      // استخدام SweetAlert لإظهار رسالة النجاح
+      Swal.fire({
+        title: `${product.productName} تم إضافته إلى السلة!`,
+        icon: "success",
+        confirmButtonText: "موافق",
+      });
     }
   };
 

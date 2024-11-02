@@ -1,13 +1,30 @@
+// const mongoose = require("mongoose");
+
+// const paymentSchema = new mongoose.Schema(
+//   {
+//     email: { type: String, required: true },
+//     name: { type: String, required: true },
+//     amount: { type: Number, required: true },
+//     currency: { type: String, required: true },
+//     paymentStatus: { type: String, required: true },
+//   },
+//   { timestamps: true }
+// );
+
+// const Payment = mongoose.model("Payment", paymentSchema);
+// module.exports = Payment;
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
   {
-    stripePaymentId: { type: String, required: true }, // معرف الدفع من Stripe
-    email: { type: String, required: true }, // تخزين البريد الإلكتروني
-    name: { type: String, required: true }, // تخزين الاسم
-    paymentStatus: { type: String, required: true }, // حالة الدفع
+    email: { type: String, required: true },
+    name: { type: String, required: true },
+    amount: { type: Number, required: true },
+    currency: { type: String, required: true },
+    paymentStatus: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.model("Payment", paymentSchema);
+module.exports = Payment;
