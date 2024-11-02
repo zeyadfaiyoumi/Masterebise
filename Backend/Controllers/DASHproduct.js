@@ -47,25 +47,46 @@ const updateProduct = async (req, res) => {
       .json({ message: "Error updating product", error: error.message });
   }
 };
-const createProduct = async (req, res) => {
-  const { productName, cost, suggestedPrice, supplier } = req.body;
+// const createProduct = async (req, res) => {
+//   const { productName, cost, suggestedPrice, supplier } = req.body;
+
+//   try {
+//     const newProduct = new Product({
+//       productName,
+//       cost,
+//       suggestedPrice,
+//       supplier,
+//     });
+//     await newProduct.save();
+//     res.status(201).json(newProduct);
+//   } catch (err) {
+//     res.status(500).json({ error: "خطأ في إضافة المنتج" });
+//   }
+// };
+const addProduct = async (req, res) => {
+  const { productName, cost, suggestedPrice, supplier, imageURL, description, category } = req.body;
+  
+  const product = new Product({
+    productName,
+    cost,
+    suggestedPrice,
+    supplier,
+    imageURL,
+    description,
+    category,
+  });
 
   try {
-    const newProduct = new Product({
-      productName,
-      cost,
-      suggestedPrice,
-      supplier,
-    });
-    await newProduct.save();
-    res.status(201).json(newProduct);
-  } catch (err) {
-    res.status(500).json({ error: "خطأ في إضافة المنتج" });
+    const savedProduct = await product.save();
+    res.status(201).json(savedProduct);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 module.exports = {
   getAllProducts,
   deleteProduct,
   updateProduct,
-  createProduct,
+  addProduct,
+  // createProduct,
 };

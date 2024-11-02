@@ -26,7 +26,6 @@ const Sidebar = () => {
   const menuItems = [
     { icon: Home, text: "الرئيسية", path: "/Dashboard" },
     { icon: Users, text: "المستخدمين", path: "/Dashboard/users" },
-
     { icon: CalendarCog, text: "المنتجات", path: "/Dashboard/product" },
     { icon: Contact, text: "الدعم الفني ", path: "/Dashboard/ContactUS" },
   ];
@@ -35,7 +34,7 @@ const Sidebar = () => {
     <>
       {/* زر القائمة للجوال */}
       <button
-        className="md:hidden fixed top-4 left-4 z-20 bg-custmblue text-white p-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+        className="md:hidden fixed top-4 right-4 z-20 bg-custmblue text-white p-2 rounded shadow-lg hover:shadow-xl transition duration-200"
         onClick={toggleSidebar}
       >
         <Menu />
@@ -43,8 +42,8 @@ const Sidebar = () => {
 
       {/* الشريط الجانبي */}
       <div
-        className={`bg-custmblue text-white h-screen w-64 fixed left-0 top-0 p-4 flex flex-col justify-between transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`bg-custmblue text-white h-screen w-64 fixed right-0 top-0 p-4 flex flex-col justify-between transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "translate-x-full"
         } md:translate-x-0 z-10 rtl shadow-lg`}
       >
         <div>
@@ -93,8 +92,8 @@ const Sidebar = () => {
 
       {/* محتوى الصفحة - للتأكد من عدم تداخل الشريط الجانبي */}
       <div
-        className={`md:ml-64 p-4 transition-all duration-300 ${
-          isOpen ? "ml-64" : "ml-0"
+        className={`md:mr-64 p-4 transition-all duration-300 ${
+          isOpen ? "mr-64" : "mr-0"
         }`}
       >
         {/* محتوى الصفحة هنا */}

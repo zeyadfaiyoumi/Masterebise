@@ -53,73 +53,71 @@ const ContactList = () => {
 
   return (
     <>
-    <div className="flex bg-primary">
-      {/* Sidebar */}
-      <Sidebar />
+      <div className="flex bg-primary">
+        {/* Sidebar */}
+        <Sidebar />
 
-      {/* Content Area */}
-      <div className="w-3/4 p-6 bg-gray-50 overflow-y-auto ml-16 flex justify-center items-center">
-        {/* Table Wrapper */}
-        <div className="bg-primary shadow-lg rounded-lg p-6 mb-6 border-t-4 border-[#0A00C7] w-full max-w-5xl">
-          <table className="min-w-full table-auto">
-            <thead className="bg-[#0A00C7] text-white">
-              <tr>
-                <th className="px-6 py-4 text-left text-lg font-semibold">
-                  الاسم
-                </th>
-                <th className="px-6 py-4 text-left text-lg font-semibold">
-                  البريد الإلكتروني
-                </th>
-                <th className="px-6 py-4 text-left text-lg font-semibold">
-                  الرسالة
-                </th>
-                <th className="px-6 py-4 text-left text-lg font-semibold">
-                  التاريخ
-                </th>
-                <th className="px-6 py-4 text-left text-lg font-semibold">
-                  إجراء
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((contact) => (
-                <tr
-                  key={contact._id}
-                  className="hover:bg-gray-50 transition-all duration-200"
-                >
-                  <td className="px-6 py-4 text-md font-medium">
-                    {contact.name}
-                  </td>
-                  <td className="px-6 py-4 text-md font-medium">
-                    {contact.email}
-                  </td>
-                  <td className="px-6 py-4 text-md font-medium break-words">
-                    {contact.message}
-                  </td>
-                  <td className="px-6 py-4 text-md font-medium">
-                    {new Date(contact.createdAt).toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 text-md font-medium">
-                    <button
-                      onClick={() => handleReply(contact.email)}
-                      className="px-4 py-2 bg-[#0A00C7] text-white rounded-full flex items-center gap-2"
-                    >
-                      <FaReply className="text-white" size={16} />{" "}
-                      {/* الإيقونة باللون الأزرق الثابت */}
-                      <span className="text-white">رد</span>
-                    </button>
-                  </td>
+        {/* Content Area */}
+        <div className="w-full min-h-screen flex justify-center items-center bg-gray-50 overflow-y-auto">
+          {/* Table Wrapper */}
+          <div className="bg-primary shadow-lg rounded-lg p-6 mb-6 border-t-4 border-[#0A00C7] w-3/4 max-w-5xl">
+            <table className="min-w-full table-auto">
+              <thead className="bg-[#0A00C7] text-white">
+                <tr>
+                  <th className="px-6 py-4 text-left text-lg font-semibold">
+                    الاسم
+                  </th>
+                  <th className="px-6 py-4 text-left text-lg font-semibold">
+                    البريد الإلكتروني
+                  </th>
+                  <th className="px-6 py-4 text-left text-lg font-semibold">
+                    الرسالة
+                  </th>
+                  <th className="px-6 py-4 text-left text-lg font-semibold">
+                    التاريخ
+                  </th>
+                  <th className="px-6 py-4 text-left text-lg font-semibold">
+                    إجراء
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {contacts.map((contact) => (
+                  <tr
+                    key={contact._id}
+                    className="hover:bg-gray-50 transition-all duration-200"
+                  >
+                    <td className="px-6 py-4 text-md font-medium">
+                      {contact.name}
+                    </td>
+                    <td className="px-6 py-4 text-md font-medium">
+                      {contact.email}
+                    </td>
+                    <td className="px-6 py-4 text-md font-medium break-words">
+                      {contact.message}
+                    </td>
+                    <td className="px-6 py-4 text-md font-medium">
+                      {new Date(contact.createdAt).toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 text-md font-medium">
+                      <button
+                        onClick={() => handleReply(contact.email)}
+                        className="px-4 py-2 bg-[#0A00C7] text-white rounded-full flex items-center gap-2"
+                      >
+                        <FaReply className="text-white" size={16} />
+                        <span className="text-white">رد</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        {/* Pagination */}
-        
+          {/* Pagination */}
+        </div>
       </div>
-    </div>
-    {/* <div className="flex justify-center w-full mt-8">
+      {/* <div className="flex justify-center w-full mt-8">
           <ReactPaginate
             pageCount={totalPages}
             onPageChange={handlePageChange}
@@ -133,7 +131,7 @@ const ContactList = () => {
             nextClassName="px-4 py-2 rounded-lg bg-[#0A00C7] text-white"
           />
         </div> */}
-        </>
+    </>
   );
 };
 

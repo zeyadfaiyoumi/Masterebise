@@ -644,7 +644,7 @@ function Chart() {
 
       // استخدام SweetAlert2 لإظهار نافذة منبثقة
       Swal.fire({
-        title: "تمت عملية الدفع بنجاح",
+        title: "تم تاكيد الطلب بنجاح",
         text: "شكرًا لك على طلبك!",
         icon: "success",
         confirmButtonText: "موافق",
