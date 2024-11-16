@@ -58,7 +58,7 @@ const ContactList = () => {
         <Sidebar />
 
         {/* Content Area */}
-        <div className="w-full min-h-screen flex justify-center items-center bg-gray-50 overflow-y-auto">
+        <div className="w-full min-h-screen flex justify-center items-center bg-primary overflow-y-auto">
           {/* Table Wrapper */}
           <div className="bg-primary shadow-lg rounded-lg p-6 mb-6 border-t-4 border-[#0A00C7] w-3/4 max-w-5xl">
             <table className="min-w-full table-auto">
@@ -117,20 +117,6 @@ const ContactList = () => {
           {/* Pagination */}
         </div>
       </div>
-      {/* <div className="flex justify-center w-full mt-8">
-          <ReactPaginate
-            pageCount={totalPages}
-            onPageChange={handlePageChange}
-            containerClassName="flex space-x-4 items-center"
-            pageClassName="px-6 py-2 rounded-lg border bg-[#0A00C7] text-white"
-            activeClassName="bg-[#1a6960] font-semibold"
-            disabledClassName="text-gray-400 cursor-not-allowed"
-            previousLabel={<FaArrowLeft size={20} />}
-            nextLabel={<FaArrowRight size={20} />}
-            previousClassName="px-4 py-2 rounded-lg bg-[#0A00C7] text-white"
-            nextClassName="px-4 py-2 rounded-lg bg-[#0A00C7] text-white"
-          />
-        </div> */}
     </>
   );
 };

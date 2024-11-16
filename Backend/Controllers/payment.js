@@ -18,7 +18,6 @@ exports.createPaymentIntent = async (req, res) => {
     } else {
       paymentStatus = "غير مدفوع";
     }
-    تلام;
 
     await Payment.create({
       email,

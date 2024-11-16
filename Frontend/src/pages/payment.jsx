@@ -78,6 +78,9 @@ const CheckoutForm = () => {
             title: "تمت عملية الدفع بنجاح!",
             text: "شكراً لك على الدفع.",
             icon: "success",
+          }).then(() => {
+            // بعد النجاح، يتم تحويل المستخدم إلى الصفحة الرئيسية
+            window.location.href = "/";
           });
         }
       } else {
@@ -85,6 +88,9 @@ const CheckoutForm = () => {
           title: "تم تأكيد الطلب!",
           text: "ستقوم بالدفع عند الاستلام.",
           icon: "success",
+        }).then(() => {
+          // بعد النجاح، يتم تحويل المستخدم إلى الصفحة الرئيسية
+          window.location.href = "/";
         });
       }
 

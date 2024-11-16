@@ -29,6 +29,8 @@ const payment = require("./Routes/payment");
 const Dashproduct = require("./Routes/DASHproduct");
 const DASHContact = require("./Routes/DASHContact ");
 const dashboardRoutes = require("./Routes/dashboardROUTER");
+const adminLoginRoute = require("./Routes/adminLoginRoute");
+const AllOrdersPage = require("./Routes/AllOrdersPage");
 app.use("/api/zos", users);
 app.use("/api/zos", product);
 app.use("/api/zos", Favorite);
@@ -40,6 +42,8 @@ app.use("/api/zos", payment);
 app.use("/api/zos", Dashproduct);
 app.use("/api/zos", DASHContact);
 app.use("/api/zos", dashboardRoutes);
+app.use("/api/zos", adminLoginRoute);
+app.use("/api/zos", AllOrdersPage);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -86,7 +86,7 @@ const AdminDashboard = () => {
                         مفعل
                       </span>
                     ) : (
-                      <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
+                      <span className="bg-red-200 text-black py-1 px-3 rounded-full text-xs">
                         غير مفعل
                       </span>
                     )}
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
                     <button
                       className={`${
                         user.isActive
-                          ? " text-red-600  font-extrabold "
+                          ? " text-red-400  font-extrabold "
                           : "bg-green-600 text-white"
                       } py-1 px-4 rounded-full text-xs`}
                       onClick={() => toggleActivation(user._id)}

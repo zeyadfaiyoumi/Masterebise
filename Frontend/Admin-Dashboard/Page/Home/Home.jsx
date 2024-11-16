@@ -22,9 +22,9 @@ import {
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [statistics, setStatistics] = useState({
-    patients: 0,
-    doctors: 0,
-    appointments: 0,
+    userCount: 0,
+    productCount: 0,
+    Orders: 0,
     totalBillingAmount: 0,
   });
   const [data, setData] = useState([]);
@@ -40,19 +40,14 @@ const Dashboard = () => {
         setStatistics([
           {
             title: "مجموع الطلبات",
-            value: stats.appointments,
+            value: stats.Orders,
             color: "bg-custmblue",
           },
-          { title: "المستخدمين", value: stats.patients, color: "bg-blue-600" },
+          { title: "المستخدمين", value: stats.userCount, color: "bg-blue-600" },
           {
             title: "مجموع المنتجات",
-            value: stats.doctors,
+            value: stats.productCount,
             color: "bg-green-600",
-          },
-          {
-            title: "الأرباح",
-            value: stats.totalBillingAmount.toFixed(2) + " JOD",
-            color: "bg-custmblue",
           },
         ]);
 
@@ -82,7 +77,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center bg-primary">
       <Sidebar />
       <div className="w-full max-w-5xl px-6 py-8">
         <div className="mb-8 text-center">
@@ -106,7 +101,7 @@ const Dashboard = () => {
         </div>
 
         {/* الرسم البياني */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div className="bg-primary rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             إحصائيات الأداء
           </h2>
@@ -145,7 +140,9 @@ const Dashboard = () => {
               <h3 className="text-xl font-bold text-gray-800 mb-1">
                 إحصائيات النمو
               </h3>
-              <p className="text-gray-600">نتطلع لتطوير اداء المتجر بسرعة عالية</p>
+              <p className="text-gray-600">
+                نتطلع لتطوير اداء المتجر بسرعة عالية
+              </p>
             </div>
           </div>
           <div className="bg-green-100 rounded-lg shadow-lg p-6 flex items-center">

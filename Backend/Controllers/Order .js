@@ -146,6 +146,7 @@ const getUserOrders = async (req, res) => {
         expectedProfit: order.expectedProfit,
         createdAt: order.createdAt,
         cancelled: order.cancelled,
+        complete: order.complete,
       };
     });
 

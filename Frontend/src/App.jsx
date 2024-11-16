@@ -19,6 +19,8 @@ import AdminDashboard from "../Admin-Dashboard/Page/Users/UserDashboard";
 import PaymentPage from "./pages/payment";
 import ProductList from "../Admin-Dashboard/Page/Productlist/DoctorsDashboard";
 import ContactList from "../Admin-Dashboard/Page/ContactUs/ContactUsDashboard";
+import AdminLogin from "../Admin-Dashboard/Page/AdminLogin";
+import AllOrdersPage from "../Admin-Dashboard/Page/AllOrdersPage";
 function App() {
   return (
     <>
@@ -49,6 +51,11 @@ function App() {
             <Route path="/Dashboard/users" element={<AdminDashboard />} />
             <Route path="/Dashboard/product" element={<ProductList />} />
             <Route path="/Dashboard/ContactUS" element={<ContactList />} />
+            <Route
+              path="/Dashboard/AllOrdersPage"
+              element={<AllOrdersPage />}
+            />
+            <Route path="/AdminLogin" element={<AdminLogin />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>

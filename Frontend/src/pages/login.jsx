@@ -43,8 +43,8 @@ function Login() {
 
       Swal.fire({
         icon: "success",
-        title: "Login Successful",
-        text: "You have successfully logged in with Google!",
+        title: "تم تسجيل الدخول بنجاح",
+        text: "لقد تم تسجيل دخولك بنجاح باستخدام حساب جوجل!",
         confirmButtonText: "OK",
       }).then(() => {
         navigate("/");
@@ -56,7 +56,7 @@ function Login() {
         title: "Login Error",
         text:
           error.response?.data?.message ||
-          "There was an error during Google login. Please try again.",
+          "حدث خطأ أثناء تسجيل الدخول باستخدام جوجل. يرجى المحاولة مرة أخرى.",
         confirmButtonText: "OK",
       });
     }
@@ -64,7 +64,7 @@ function Login() {
 
   return (
     <>
-      <section className="bg-[url('https://media.discordapp.net/attachments/1239307079853019276/1282331615422451722/WhatsApp_Image_2024-09-05_at_15.16.00_1.jpeg?ex=66def7e1&is=66dda661&hm=272b8e4d195009cf3c461df1c70b76a7bb6800b0d199d9cc9b41be26bfb30362&=&format=webp&width=1177&height=662')] bg-no-repeat bg-cover bg-center dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center py-12">
+      <section className="bg-[url('/src/assets/sign-bg.jpg')] bg-no-repeat bg-cover bg-center dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center py-12">
         <Link to="/">
           <img
             src={NEWlogo}

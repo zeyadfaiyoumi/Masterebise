@@ -12,9 +12,9 @@ const getDashboardStatistics = async (req, res) => {
     ]);
 
     res.status(200).json({
-      patients: userCount,
-      doctors: productCount,
-      appointments: orderCount,
+      userCount: userCount,
+      productCount: productCount,
+      Orders: orderCount,
       totalBillingAmount: totalBillingAmount[0]?.total || 0,
     });
   } catch (error) {

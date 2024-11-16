@@ -155,46 +155,6 @@ exports.getAllUsers = async (req, res) => {
 };
 // ___________________________________updateUser____________________
 
-// exports.updateUser = async (req, res) => {
-//   const userId = req.user.id; // الحصول على ID المستخدم المسجل
-//   const { name, location, phonNum, password } = req.body; // القيم القادمة من الفرونت إند
-
-//   try {
-//     // إنشاء كائن يحتوي على البيانات المحدثة
-//     const updatedData = {
-//       name,
-//       location,
-//       phonNum,
-//       image: req.fill.path,
-//     };
-
-//     // إذا تم إرسال كلمة المرور، نقوم بتشفيرها وإضافتها إلى البيانات المحدثة
-//     if (password) {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       updatedData.password = hashedPassword; // إضافة كلمة المرور المشفرة
-//     }
-
-//     // تحديث بيانات المستخدم في قاعدة البيانات
-//     const updatedUser = await User.findByIdAndUpdate(
-//       userId,
-//       updatedData,
-//       { new: true } // هذا الخيار يعيد الكائن المحدث
-//     );
-
-//     // تحقق من وجود المستخدم
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res
-//       .status(200)
-//       .json({ message: "User updated successfully", user: updatedUser });
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({ message: "Internal server error", error: error.message });
-//   }
-// };
 exports.updateUser = async (req, res) => {
   const userId = req.user.id; // الحصول على ID المستخدم المسجل
   const { name, location, phonNum, password } = req.body; // القيم القادمة من الفرونت إند

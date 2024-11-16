@@ -88,8 +88,8 @@ function Signup() {
       if (res.data.token) {
         Swal.fire({
           icon: "success",
-          title: "Signup Successful",
-          text: "You have successfully signed up with Google!",
+          title: "تم التسجيل بنجاح",
+          text: "تم التسجيل بنجاح باستخدام جوجل!",
           confirmButtonText: "OK",
         }).then(() => {
           navigate("/");

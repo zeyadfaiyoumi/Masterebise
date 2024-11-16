@@ -17,23 +17,6 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
-// Thunk لتحديث بيانات الملف الشخصي
-// export const updateUserProfile = createAsyncThunk(
-//   "profile/updateUserProfile",
-//   async (updatedData, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.put(
-//         "http://localhost:5001/api/zos/updateUserprofil",
-//         updatedData,
-//         { withCredentials: true }
-//       );
-//       fetchUserProfile();
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
 export const updateUserProfile = createAsyncThunk(
   "profile/updateUserProfile",
   async (updatedData, { dispatch, rejectWithValue }) => {

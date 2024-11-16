@@ -20,7 +20,7 @@ const Sidebar = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleLogout = () => {
-    navigate("/login");
+    navigate("/AdminLogin");
   };
 
   const menuItems = [
@@ -28,6 +28,7 @@ const Sidebar = () => {
     { icon: Users, text: "المستخدمين", path: "/Dashboard/users" },
     { icon: CalendarCog, text: "المنتجات", path: "/Dashboard/product" },
     { icon: Contact, text: "الدعم الفني ", path: "/Dashboard/ContactUS" },
+    { icon: Menu, text: "الطلبات", path: "/Dashboard/AllOrdersPage" },
   ];
 
   return (
@@ -74,30 +75,13 @@ const Sidebar = () => {
             </ul>
           </nav>
         </div>
-
-        {/* قسم معلومات المسؤول */}
-        <div className="pt-6 border-t border-primary">
-          <div className="flex items-center space-x-2">
-            <div className="flex-shrink-0 w-10 h-10">
-              <img
-                className="w-full h-full rounded-full"
-                src="https://ui-avatars.com/api/?name=Admin&background=random"
-                alt="Admin"
-              />
-            </div>
-            <span className="font-semibold">المسؤول</span>
-          </div>
-        </div>
       </div>
 
-      {/* محتوى الصفحة - للتأكد من عدم تداخل الشريط الجانبي */}
       <div
         className={`md:mr-64 p-4 transition-all duration-300 ${
           isOpen ? "mr-64" : "mr-0"
         }`}
-      >
-        {/* محتوى الصفحة هنا */}
-      </div>
+      ></div>
     </>
   );
 };
