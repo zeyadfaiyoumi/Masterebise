@@ -4,6 +4,7 @@ import axios from "axios";
 // 1. إنشاء دالة جلب المنتجات
 export const getProduct = createAsyncThunk("products/getProduct", async () => {
   const response = await axios.get("http://localhost:5001/api/zos/getdata");
+  // .ENV
   return response.data;
 });
 

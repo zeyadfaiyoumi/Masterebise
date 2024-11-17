@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const verifyToken = (req, res, next) => {
-  // جلب التوكن من الكوكيز أو الهيدرز
+  // جلب التوكن من الكوكيز  
   const token = req.cookies.token;
 
   if (!token) {
